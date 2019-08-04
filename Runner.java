@@ -7,8 +7,8 @@ public class Runner {
     public int iteration;
     public int[] layout;
 
-    public Runner() {
-        this.layout = new int[] {2, 4, 4, 1};
+    public Runner(int[] layout) {
+        this.layout = layout;
         this.learningRate = 0.3;
         this.net = new Network(this.layout);
         this.iteration = 0;
@@ -47,54 +47,6 @@ public class Runner {
         } 
 
         this.iteration++;
-    }
 
-    public static void printMatrix(double[] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            System.out.print(matrix[i] + " ");
-        }
-        System.out.println();
-    }
-
-    public static void main(String[] args) {
-
-        int[] layout = {2, 3, 2};
-        Network net = new Network(layout);
-        double learningRate = 0.3;
-
-        Random r = new Random();
-        for (int i = 0; i < 2000000; i++) {
-            boolean a = r.nextBoolean();
-            boolean b = r.nextBoolean();
-
-            double[] input = {0.0, 0.0};
-            double[] output = {0.0, 0.0};
-
-            if (a == true) {
-                input[0] = 1.0;
-            }
-            if (b == true) {
-                input[1] = 1.0;
-            }
-
-            if (a && b) {
-                output[0] = 1.0;
-            } else {
-                output[1] = 1.0;
-            }
-
-            net.train(input, output, learningRate);
-            // printMatrix(net.query(new double[] {1.0, 1.0}));
-            // printMatrix(net.query(new double[] {1.0, 0.0}));
-            // printMatrix(net.query(new double[] {0.0, 1.0}));
-            // printMatrix(net.query(new double[] {0.0, 0.0}));
-            // System.out.println();
-        }
-
-        // printMatrix(net.query(new double[] {0.50, 0.50}));
-        printMatrix(net.query(new double[] {1.0, 1.0}));
-        printMatrix(net.query(new double[] {1.0, 0.0}));
-        printMatrix(net.query(new double[] {0.0, 1.0}));
-        printMatrix(net.query(new double[] {0.0, 0.0}));
     }
 }

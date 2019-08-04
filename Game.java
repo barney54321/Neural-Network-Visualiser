@@ -6,14 +6,17 @@ import java.awt.image.BufferStrategy;
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1550691097823471818L; // This is required
-
-	public static final int WIDTH = 780, HEIGHT = WIDTH / 12 * 9; // Sets up window width and height
-
+	public static final int WIDTH = 780, HEIGHT = WIDTH / 12 * 9; 
 	private Thread thread;
+	private boolean running = false; 
 
-	private boolean running = false; // boolean to check if game is running
+	private int[] layout;
+	private Runner runner;
 
 	public Game() {
+
+		this.layout = new int[] {2, 4, 4, 1};
+		this.runner = new Runner(this.layout);
 
 		new Window(WIDTH, HEIGHT, "Neural Net Visualiser", this); // Game constructor
 
@@ -66,6 +69,8 @@ public class Game extends Canvas implements Runnable {
 
 	private void tick() {
 
+		this.runner.tick();
+
 	}
 
 	private void render() { // Renders the window
@@ -80,19 +85,22 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
+		g.setColor(Color.cyan);
+
+		int widthOffset = 200;
+		int heightOffset = 0;
+		int widthBracket = (this.WIDTH - widthOffset) / this.layout.length;
+		for (int i = 0; i < this.layout.length; i++) {
+			int heightBracket = (this.HEIGHT - heightOffset * 2) / this.layout[i];
+			int midHeight = heightBracket / 2;
+			int upOffset = 40;
+			for (int j = 0; j < this.layout[i]; j++) {
+				g.fillRect(widthOffset + widthBracket * i, heightOffset + heightBracket * j + midHeight - upOffset, 40, 40);
+			}
+		}
 
 		g.dispose();
 		bs.show();
-	}
-
-	public static int clamp(int var, int min, int max) {
-		if(var >= max) {
-			return var = max;
-		} else if (var <= min) {
-			return var = min;
-		} else {
-			return var;
-		}
 	}
 
 	public static void main(String[] args) {
