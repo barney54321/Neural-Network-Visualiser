@@ -1,1 +1,8 @@
-*.class
+Game.class
+Hidden.class
+Input.class
+Layer.class
+Network.class
+Output.class
+Runner.class
+Window.class
