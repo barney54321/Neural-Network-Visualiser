@@ -49,4 +49,24 @@ public class Runner {
         this.iteration++;
 
     }
+
+    public double[][][] getMatrices() {
+        return this.net.getMatrices();
+    }
+
+    public double queryBothTrue() {
+        return this.net.query(new double[] {1.0, 1.0})[0];
+    }
+
+    public double queryLeftTrue() {
+        return this.net.query(new double[] {1.0, 0.0})[0];
+    }
+
+    public double queryRightTrue() {
+        return this.net.query(new double[] {0.0, 1.0})[0];
+    }
+
+    public double queryBothFalse() {
+        return this.net.query(new double[] {0.0, 0.0})[0];
+    }
 }

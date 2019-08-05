@@ -2,6 +2,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.lang.Math;
+import java.awt.Font;
 
 public class Game extends Canvas implements Runnable {
 
@@ -89,15 +91,70 @@ public class Game extends Canvas implements Runnable {
 
 		int widthOffset = 200;
 		int heightOffset = 0;
+		int length = 40;
 		int widthBracket = (this.WIDTH - widthOffset) / this.layout.length;
+		double[][][] matrices = this.runner.getMatrices();
+
+		// Calculate the larget weight
+		double max = matrices[0][0][0];
+		double min = matrices[0][0][0];
+		for (int i = 0; i < matrices.length; i++) {
+			for (int j = 0; j < matrices[i].length; j++) {
+				for (int m = 0; m < matrices[m].length; m++) {
+					if (matrices[i][j][m] > max) {
+						max = matrices[i][j][m];
+					} else if (matrices[i][j][m] < min) {
+						min = matrices[i][j][m];
+					}
+				}
+			}
+		}
+
+		// Calculate what is larger
+		double bigger = Math.abs(min) > Math.abs(max) ? Math.abs(min) : Math.abs(max);
+
 		for (int i = 0; i < this.layout.length; i++) {
 			int heightBracket = (this.HEIGHT - heightOffset * 2) / this.layout[i];
 			int midHeight = heightBracket / 2;
 			int upOffset = 40;
 			for (int j = 0; j < this.layout[i]; j++) {
-				g.fillRect(widthOffset + widthBracket * i, heightOffset + heightBracket * j + midHeight - upOffset, 40, 40);
+
+				if (i != this.layout.length - 1) {
+
+					// Figure out the locations of the next layer's nodes
+					int nextX = widthOffset + widthBracket * (i + 1) + length / 2;
+					int nextHeightBracket = (this.HEIGHT - heightOffset * 2) / this.layout[i + 1];
+					int nextMidHeight = nextHeightBracket / 2;
+
+					for (int k = 0; k < this.layout[i+1]; k++) {
+
+						double opacityBracket = (255 / 2) / bigger;
+						int opacity = (int) ( 255 / 2 + opacityBracket * matrices[i][k][j]);
+						if (opacity < 0) {
+							opacity = 0;
+						} else if (opacity > 255) {
+							opacity = 254;
+						}
+						g.setColor(new Color(0, 255, 0, opacity));
+
+						int startX = widthOffset + widthBracket * i + length / 2;
+						int startY = heightOffset + heightBracket * j + midHeight - upOffset + length / 2;
+						int nextY = heightOffset + nextHeightBracket * k + nextMidHeight - upOffset + length / 2;
+						g.drawLine(startX, startY, nextX, nextY);
+					}
+				}
+
+				g.setColor(Color.cyan);
+				g.fillRect(widthOffset + widthBracket * i, heightOffset + heightBracket * j + midHeight - upOffset, length, length);
 			}
 		}
+
+		g.setColor(Color.white);
+		g.setFont(new Font("Arial", 0, 30)); 
+		g.drawString("T T: " + ("" + (100 * this.runner.queryBothTrue())).substring(0, 4) + "%", 20, 200);
+		g.drawString("T F: " + ("" + (100 * this.runner.queryLeftTrue())).substring(0, 4) + "%", 20, 240);
+		g.drawString("F T: " + ("" + (100 * this.runner.queryRightTrue())).substring(0, 4) + "%", 20, 280);
+		g.drawString("F F: " + ("" + (100 * this.runner.queryBothFalse())).substring(0, 4) + "%", 20, 320);
 
 		g.dispose();
 		bs.show();

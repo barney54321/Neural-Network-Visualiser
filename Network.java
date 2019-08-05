@@ -78,4 +78,25 @@ public class Network {
 
         this.output.fix(learningRate);
     }
+
+    public double[][][] getMatrices() {
+        
+        // Calculate number of layers
+        int num = 0;
+        Layer l = this.input;
+        while (l.next != null) {
+            num += 1;
+            l = l.next;
+        }
+
+        double[][][] res = new double[num][][];
+
+        l = this.input.next;
+        for (int i = 0; i < num; i++) {
+            res[i] = l.weightMatrix;
+            l = l.next;
+        }
+
+        return res;
+    }
 }
