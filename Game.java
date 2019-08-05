@@ -17,7 +17,7 @@ public class Game extends Canvas implements Runnable {
 
 	public Game() {
 
-		this.layout = new int[] {2, 3, 1};
+		this.layout = new int[] {2, 4, 4, 1};
 		this.runner = new Runner(this.layout);
 
 		new Window(WIDTH, HEIGHT, "Neural Net Visualiser", this); // Game constructor
@@ -100,7 +100,7 @@ public class Game extends Canvas implements Runnable {
 		double min = matrices[0][0][0];
 		for (int i = 0; i < matrices.length; i++) {
 			for (int j = 0; j < matrices[i].length; j++) {
-				for (int m = 0; m < matrices[m].length; m++) {
+				for (int m = 0; m < matrices[i][j].length; m++) {
 					if (matrices[i][j][m] > max) {
 						max = matrices[i][j][m];
 					} else if (matrices[i][j][m] < min) {
