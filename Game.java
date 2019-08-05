@@ -17,7 +17,7 @@ public class Game extends Canvas implements Runnable {
 
 	public Game() {
 
-		this.layout = new int[] {2, 4, 4, 1};
+		this.layout = new int[] {2, 3, 1};
 		this.runner = new Runner(this.layout);
 
 		new Window(WIDTH, HEIGHT, "Neural Net Visualiser", this); // Game constructor
@@ -155,6 +155,8 @@ public class Game extends Canvas implements Runnable {
 		g.drawString("T F: " + ("" + (100 * this.runner.queryLeftTrue())).substring(0, 4) + "%", 20, 240);
 		g.drawString("F T: " + ("" + (100 * this.runner.queryRightTrue())).substring(0, 4) + "%", 20, 280);
 		g.drawString("F F: " + ("" + (100 * this.runner.queryBothFalse())).substring(0, 4) + "%", 20, 320);
+
+		g.drawString(("" + this.runner.iteration), this.WIDTH - 140, 40);
 
 		g.dispose();
 		bs.show();
